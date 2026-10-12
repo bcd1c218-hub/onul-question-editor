@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ── 원고 편집실(기존) ──────────────────────────────
+    match /submissions/{docId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if true;
+      allow delete: if false;
+    }
+    match /customActivities/{docId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // ── 질문 편집실(새로 추가) ─────────────────────────
+    // 질문 다듬기 기록
+    match /questionSessions/{docId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if true;
+      allow delete: if false;
+    }
+    // 기자회견 기록
+    match /interviewSessions/{docId} {
+      allow read: if true;
+      allow create: if true;
+      allow update: if true;
+      allow delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
